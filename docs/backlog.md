@@ -58,12 +58,15 @@ Legenda: `[ ]` a fazer · `[~]` em andamento (escrito, falta validar) · `[x]` c
 - [x] Lint sem erros
 
 ### Semana 5 — SPI front-end e PLL mock (entrega 20/11)
-- [ ] `minisoc_spi` (seção 5): modo 0, MSB primeiro, frame de 40 bits; leitura em duas transações com NOP `0x3F`
-- [ ] Recepção serial no domínio de `spi_sclk` e banco de registradores no domínio `clk`, com toggle para o frame completo
-- [ ] Banco de registradores (seção 6): KEY, IV, COUNTER, NUM_BLOCKS, AES_CONTROL, AES_STATUS, VERSION, SYSTEM_CONTROL e SYSTEM_STATUS
-- [ ] `minisoc_pll_mock` (seção 4.1): enable, `PLL_DIV_SEL` (/1, /2, /4, /8), `locked` após número pseudoaleatório de ciclos
-- [ ] Testbench: escrita e leitura de todos os registradores via SPI e PLL até `PLL_LOCKED = 1` (passos 8 e 9 da seção 9)
-- [ ] Relatório de lint
+- [x] `minisoc_spi` (seção 5): modo 0, MSB primeiro, frame de 40 bits; leitura em duas transações com NOP `0x3F` — escrito (`minisoc_spi_slave` + `minisoc_spi`); validar no VCS
+- [x] Recepção serial no domínio de `spi_sclk` e banco de registradores no domínio `clk`, com toggle para o frame completo — escrito; validar no VCS
+- [x] Banco de registradores (seção 6): KEY, IV, COUNTER, NUM_BLOCKS, AES_CONTROL, AES_STATUS, VERSION, SYSTEM_CONTROL e SYSTEM_STATUS — escrito (`minisoc_spi_regbank`); endereços e campos são premissas a conferir com o Block Guide
+- [x] `minisoc_pll_mock` (seção 4.1): enable, `PLL_DIV_SEL` (/1, /2, /4, /8), `locked` após número pseudoaleatório de ciclos — escrito, com LFSR reprodutível
+- [x] Testbench: escrita e leitura de todos os registradores via SPI e PLL até `PLL_LOCKED = 1` (passos 8 e 9 da seção 9) — `tb_minisoc_w05` (820 checks) passou no Verilator; validar no VCS
+- [x] Relatório de lint (`make lint_spi` no VCS, versionar `reports/lint_spi.rpt`)
+- [x] Rodar `make w05` no VCS, preencher a tabela em `docs/reports/semana_05.md` e versionar `reports/sim_spi.rpt`
+- [ ] Ler as seções 5, 6 e 9 do Block Guide e fechar a tabela de premissas (`docs/architecture/spi_regbank_pll_v1.0.md`, seção 6)
+- [ ] Tag `w05-spi-pll-v1.0`
 
 ### Semana 6 — AES engine e memória compartilhada (entrega 27/11)
 - [ ] `minisoc_memory` (seção 7): 1024 × 32 bits, porta única síncrona, sem reset, ownership por `MEM_SEL_AES`
@@ -147,7 +150,8 @@ Recesso de 21/12/2026 a 03/01/2027, sem entregas.
 - [ ] Issues do verificador parceiro (classificar: defeito de RTL, defeito do ambiente de verificação ou ambiguidade de especificação)
 - [ ] Ambiguidades de especificação a esclarecer (levar ao instrutor):
 - [ ] Nomes de porta dos submódulos do datapath e nomes de MixColumns, AddRoundKey e das inversas
-- [ ] Semente do PLL mock e como o verificador reproduz o número pseudoaleatório de ciclos
+- [ ] Semente do PLL mock e como o verificador reproduz o número pseudoaleatório (o mock atual usa LFSR com `SEED = 16'hACE1`; ver semana 5)
+- [ ] Endereços e campos dos registradores, formato exato do frame de leitura e codificação de `MODE` (premissas P1 a P15 da semana 5) de ciclos
 - [ ] Clock da MEMORY DATA IF e troca de ownership da memória
 - [ ] Ferramenta de lint definitiva
 - [ ] Significado de "reference flow" citado na atividade
